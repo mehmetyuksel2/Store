@@ -1,0 +1,28 @@
+@* @{
+    Layout = "_Layout";
+} _ViewStart.cshtml dosyasında zaten tanımlı*@
+@model IQueryable<Product>
+    <!--storeapp in altında models in altonda product modelini import et-->
+<div class="row">
+    <div class="col-md-3">
+        @await Component.InvokeAsync("CategoriesMenu")<!--Component/CategoriesMenuViewComponent.cs üzerinden
+                                                            View/Shared/CategoriesMenu/default.cshtml dosyasını çeker-->
+        @await Component.InvokeAsync("ProductFilterMenu")<!--Component/ProductFilterMenuViewComponent.cs üzerinden
+                                                                View/Shared/ProductFilterMenu/default.cshtml dosyasını çeker-->
+
+    </div>
+    <div class="col-md-9">
+        <div class="row my-3">
+        @foreach(Product prd in Model)
+        {
+            <partial name="_ProductCard" model="@prd"/>//shared dosyasının altından _ProductCard.cshtml kodlarını @prd parametresini vererek çeker
+        }                                     
+        </div>
+    </div>
+</div>
+@section Footer{<!--sadece index footerına ekle
+(RenderSection)-->
+    <div>
+        Only for index footer
+    </div>
+}

@@ -1,0 +1,18 @@
+using AutoMapper;
+using Entities.Dtos;
+using Entities.Models;
+
+namespace StoreApp.infrastructe.Mapper
+{
+    public class MappingProfile : Profile
+    {
+        public MappingProfile()
+        {
+            CreateMap<ProductDtoForInsertion,Product>();
+            //ProductDtoForInsertion nesnesi product nesnesine dönüştürülmekte
+            CreateMap<ProductDtoForUpdate,Product>().ReverseMap();
+            //ReverseMap() metodu çift yönlü dönüştürme yapabilir
+           
+        }
+    }
+}
