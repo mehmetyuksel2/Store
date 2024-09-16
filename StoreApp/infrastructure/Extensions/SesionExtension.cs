@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace StoreApp.Infrastructe.Extensions
+namespace StoreApp.infrastructure.Extensions
 {//HttpContext.Session.(dan sonra burada implemente edilen metodlar gelir)
     public static class SessionExtension
     {// iki metodda aynı işlevi görür. birinde objeye bağlı çalışır diğeri T parametresine bağlı yani dinamik.

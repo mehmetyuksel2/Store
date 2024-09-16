@@ -4,12 +4,14 @@ using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Config;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace Repositories;
 
 
-    public class RepositoryContext: DbContext//dbcontexten türetiyoruz
+    public class RepositoryContext: IdentityDbContext<IdentityUser>//dbcontexten türetiyoruz
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }

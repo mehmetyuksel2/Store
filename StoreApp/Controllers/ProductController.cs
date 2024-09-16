@@ -5,6 +5,7 @@ using Repositories.Contracts;
 using Services.Contracts;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Entities.RequestParam;
+using StoreApp.Models;
 
 namespace StoreApp.Controllers
 {
@@ -20,10 +21,21 @@ namespace StoreApp.Controllers
             _manager = manager;
         }
 
-        public IActionResult Index(ProductRequestParameters p)
+        public IActionResult Index(ProductRequestParameters p)//her index sayfası karşımıza geldiğinde requestten değer alınır ve burada işlenir
         {
-            var model = _manager.ProductService.GetAllProductsWithDetails(p);//bütün verileri çek
-            return View(model);//ve view a gönder
+            var products = _manager.ProductService.GetAllProductsWithDetails(p);//bütün verileri çek
+            var pagination = new Pagination()//gelen verileri paginaton nesnesiyle eşleştir
+            {
+                CurrenPage = p.PageNumber,
+                ItemsPerPage = p.PageSize,
+                TotalItems = _manager.ProductService.GetAllProducts(false).Count()
+            };
+            return View(new ProductListViewModel()//model olarak paketleyip gönder
+            {
+                Products = products,
+                Pagination = pagination
+
+            });//ve view a gönder
         }
         public IActionResult Get([FromRoute(Name="id")]int id){//fromRoute id nin nereden geleceğini belirtir Route tan geliyor
             //Product product = _context.Products.First(p => p.ProductId.Equals(id));

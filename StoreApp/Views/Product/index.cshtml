@@ -1,27 +1,37 @@
 @* @{
     Layout = "_Layout";
 } _ViewStart.cshtml dosyasında zaten tanımlı*@
-@model IQueryable<Product>
-    <!--storeapp in altında models in altonda product modelini import et-->
+@model ProductListViewModel
+<!--storeapp in altında models in altonda product modelini import et-->
 <div class="row">
     <div class="col-md-3">
-        @await Component.InvokeAsync("CategoriesMenu")<!--Component/CategoriesMenuViewComponent.cs üzerinden
-                                                            View/Shared/CategoriesMenu/default.cshtml dosyasını çeker-->
-        @await Component.InvokeAsync("ProductFilterMenu")<!--Component/ProductFilterMenuViewComponent.cs üzerinden
-                                                                View/Shared/ProductFilterMenu/default.cshtml dosyasını çeker-->
-
+        @await Component.InvokeAsync("CategoriesMenu")
+        <!--Component/CategoriesMenuViewComponent.cs üzerinden
+              View/Shared/CategoriesMenu/default.cshtml dosyasını çeker-->
+        @await Component.InvokeAsync("ProductFilterMenu")
+        <!--Component/ProductFilterMenuViewComponent.cs üzerinden
+        View/Shared/ProductFilterMenu/default.cshtml dosyasını çeker-->
+        <div LastestProducts="" number="3"></div>
     </div>
     <div class="col-md-9">
         <div class="row my-3">
-        @foreach(Product prd in Model)
-        {
-            <partial name="_ProductCard" model="@prd"/>//shared dosyasının altından _ProductCard.cshtml kodlarını @prd parametresini vererek çeker
-        }                                     
+            @foreach (Product prd in Model.Products)
+            {
+                <partial name="_ProductCard" model="@prd" />
+                //shared dosyasının altından _ProductCard.cshtml kodlarını @prd parametresini vererek çeker
+            }
         </div>
+        <div page-model="@Model?.Pagination" page-action="Index"
+             page-classes-enabled="true"
+             page-class="btn"
+             page-class-normal="btn-outline-dark"
+             page-class-selected="btn-primary"
+             class="btn-group"></div><!--koşula göre buradaki classlar aktif olur yada olmaz-->
     </div>
 </div>
-@section Footer{<!--sadece index footerına ekle
-(RenderSection)-->
+@section Footer {
+    <!--sadece index footerına ekle
+    (RenderSection)-->
     <div>
         Only for index footer
     </div>

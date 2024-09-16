@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
-using StoreApp.Infrastructe.Extensions;
+using StoreApp.infrastructure.Extensions;
 
 namespace StoreApp.Models
 {

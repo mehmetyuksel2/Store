@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace StoreApp.infrastructe.Extensions
+namespace StoreApp.infrastructure.Extensions
 {
     public static class HttpRequestExtension
     {

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Repositories.Contracts;
 using Repositories.Extensions;
+using System.Runtime.CompilerServices;
 
 namespace Repositories
 {
@@ -21,11 +22,12 @@ namespace Repositories
 
         public IQueryable<Product> GetAllProductsWithDetails(ProductRequestParameters p)//bu metod ProductManager dan çağırılır--parametresinde çağırılan değer
                                                                                         //categoryId ve searchTerm dir
-        {
+        {//ürünleri belli koşullara göre filtreler
             return _context.Products
                 .FilterByCategoryId(p.CategoryId)
                 .FilteredBySearchTerm(p.SearchTerm)
-                .FilteredByPrice(p.MinPrice,p.MaxPrice,p.IsValidPrice);
+                .FilteredByPrice(p.MinPrice,p.MaxPrice,p.IsValidPrice)
+                .ToPaginate(p.PageNumber,p.PageSize);
                 
         }
 
@@ -36,7 +38,7 @@ namespace Repositories
        }
 
         public IQueryable<Product> GetShowCaseProducts(bool trackChanges)
-        {
+        {//vitrin ürünlerini getirir
             return FindAll(trackChanges)
                 .Where(p => p.ShowCase.Equals(true));
         }
@@ -44,6 +46,6 @@ namespace Repositories
         public void UpdateOneProduct(Product entity) => Update(entity);
 
         void IProductRepository.CreateOneProduct(Product product) => Create(product);
-    
+        
     }
 }

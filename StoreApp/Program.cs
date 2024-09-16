@@ -4,7 +4,7 @@ using Repositories;
 using Repositories.Contracts;
 using Services;
 using Services.Contracts;
-using StoreApp.infrastructe.Extensions;
+using StoreApp.infrastructure.Extensions;
 using StoreApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();//razorpage leri controller olmadan kullanmak için eklememiz gereken kod satırı
 builder.Services.ConfigureDbContext(builder.Configuration);
+builder.Services.ConfigureIdentity();
 builder.Services.ConfigureSession();
 builder.Services.ConfigureRepositoryRegistration();
 
@@ -29,8 +30,8 @@ var app = builder.Build();
 // app.MapGet("/btk", () => "Btk Akademi");//endpoint özelinde text döndürür
 
 app.UseStaticFiles();
-app.UseRouting();
 app.UseSession();
+app.UseRouting();
 
 app.UseEndpoints(endpoints => 
 {
@@ -46,5 +47,5 @@ app.ConfigureAndCheck();//extensions dosyasındaki implemente ettiğimiz
 app.ConfigureLocalization();//metodları burada çalıştırıyoruz
 app.MapControllerRoute("default","{controller=Home}/{action=Index}/{id?}");
 
-
+app.ConfigureDefaultAdminUser();
 app.Run();

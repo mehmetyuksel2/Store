@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StoreApp.Infrastructe.Extensions;// buraya import etmemiz gerekiyor tabi
+using StoreApp.infrastructure.Extensions;// buraya import etmemiz gerekiyor tabi
 //extensions metodlar static olur ve verilen ilk parametre genişletillen ifadenin type ı yazılır
 namespace StoreApp.Pages
 {// code behind

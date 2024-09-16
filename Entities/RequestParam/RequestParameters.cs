@@ -9,6 +9,7 @@ namespace Entities.RequestParam
     public abstract class RequestParameters
     {// daha genel endpoint parametreleri burada yakalanır. daha spesifik parametreler için bu sınıf kalıtım verilir ve o sınıflarda daha özel metodlar yazılır
         public String? SearchTerm { get; set; }//formla uyuşması için değişken ismi aynı olmalıdır name ile
-
+        
     }
+    
 }

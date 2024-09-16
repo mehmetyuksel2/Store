@@ -50,8 +50,15 @@ namespace Services
         }
 
         public IQueryable<Product> GetAllProductsWithDetails(ProductRequestParameters p)
-        {
+        {//parametre modelinden gelen object teki verilerle ürünleri filtrele
             return _manager.Product.GetAllProductsWithDetails(p);
+        }
+
+        public IEnumerable<Product> GetLastestProducts(int Number, bool trackChanges)
+        {//son eklenen "number" kadar ürünü listele
+            return _manager.Product.FindAll(trackChanges)
+                .OrderByDescending(prd => prd.ProductId)
+                .Take(Number);
         }
 
         public Product? GetOneProduct(int id, bool trackChanges)

@@ -5,8 +5,9 @@ using Services.Contracts;
 using Services;
 using Entities.Models;
 using StoreApp.Models;
+using Microsoft.AspNetCore.Identity;
 
-namespace StoreApp.infrastructe.Extensions
+namespace StoreApp.infrastructure.Extensions
 {
     public static class ServiceExtension
     {
@@ -19,7 +20,21 @@ namespace StoreApp.infrastructe.Extensions
                 //b.MigrationsAssembly("StoreApp") contex ve modeller repositories deyken storeapp de
                 // migration oluşturmak için 
                 // burada storeapp e yönlendirme yapıyoruz
+                options.EnableSensitiveDataLogging(true);//veri alış verişini görebilmek için true yapılır yayına alınca tersi yapılır
+                
             });
+        }
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;//emailini onaylamayan kullanıcıya izin yok
+                options.User.RequireUniqueEmail = true;//benzersiz email
+                options.Password.RequireUppercase = false;//büyük harf gereksinmi
+                options.Password.RequireLowercase = false;//küçük harf gereksinmi
+                options.Password.RequireDigit = false;//rakam gereksinmi
+                options.Password.RequiredLength = 6;//password min 6 karakter olsun
+            }).AddEntityFrameworkStores<RepositoryContext>();
         }
 
         public static void ConfigureSession(this IServiceCollection services)
