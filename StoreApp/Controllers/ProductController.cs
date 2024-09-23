@@ -40,6 +40,7 @@ namespace StoreApp.Controllers
         public IActionResult Get([FromRoute(Name="id")]int id){//fromRoute id nin nereden geleceğini belirtir Route tan geliyor
             //Product product = _context.Products.First(p => p.ProductId.Equals(id));
             var model = _manager.ProductService.GetOneProduct(id,false);
+            ViewData["Title"] = model.ProductName;
             return View(model);
         }
     }

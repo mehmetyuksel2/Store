@@ -5,7 +5,7 @@ namespace Entities.Models
     public class Cart
     {//razor pages de controller sız kullanmak için örneklendirmeler burada mevcut.
      //pagemodel örneklendirmeleri
-        public List<CartLine> Lines { get; set; }
+        public List<CartLine> Lines { get; set; }//sepetteki satırları ifade eder.
         
         public Cart()
         {

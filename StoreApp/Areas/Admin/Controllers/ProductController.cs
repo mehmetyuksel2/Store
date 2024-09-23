@@ -1,11 +1,17 @@
 using Entities.Dtos;
 using Entities.Models;
+using Entities.RequestParam;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Repositories.Extensions;
 using Services.Contracts;
+using StoreApp.Models;
 namespace StoreApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    //[Authorize]//bu sayfayı görebilmek için login olmak yeterli
+    [Authorize(Roles = "Admin")]//hem login olup hemde bu admin ise bu sayfayı gör
     public class ProductController : Controller
     {
 
@@ -16,10 +22,22 @@ namespace StoreApp.Areas.Admin.Controllers
             _manager = manager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index([FromQuery] ProductRequestParameters p)
         {
-            var model = _manager.ProductService.GetAllProducts(false);
-            return View(model);
+            ViewData["Title"] = "Products";
+            var products = _manager.ProductService.GetAllProductsWithDetails(p);//bütün verileri çek
+            var pagination = new Pagination()//gelen verileri paginaton nesnesiyle eşleştir
+            {
+                CurrenPage = p.PageNumber,
+                ItemsPerPage = p.PageSize,
+                TotalItems = _manager.ProductService.GetAllProducts(false).Count()
+            };
+            return View(new ProductListViewModel()//model olarak paketleyip gönder
+            {
+                Products = products,
+                Pagination = pagination
+
+            });//ve view a gönder
         }
         public IActionResult Create()
         {
@@ -53,6 +71,7 @@ namespace StoreApp.Areas.Admin.Controllers
                 productDto.ImageUrl = String.Concat("/images/",file.FileName);
 
                 _manager.ProductService.CreateProduct(productDto);
+                TempData["success"] = $"{productDto.ProductName} has been created.";//eklenen ürünün ismini yazdır
                 return RedirectToAction("Index");
             }
             return View();
@@ -61,6 +80,7 @@ namespace StoreApp.Areas.Admin.Controllers
         {
             ViewBag.Categories = GetCategoriesSelectList();
             var model = _manager.ProductService.GetOneProductForUpdate(id,false);
+            ViewData["Title"] = model.ProductName;//title a productName verir
             return View(model);
         }
         [HttpPost]
@@ -87,6 +107,7 @@ namespace StoreApp.Areas.Admin.Controllers
         public IActionResult Delete([FromRoute(Name = "id")] int id)
         {
             _manager.ProductService.DeleteOneProduct(id);//productManager'de implemente edilmiş metodu burada kullanıyoruz --> bunu takip et
+            TempData["danger"] = "The product has been removed.";//_Notificated
             return RedirectToAction("Index");
         }
     }

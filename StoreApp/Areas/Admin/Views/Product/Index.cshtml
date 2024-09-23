@@ -1,5 +1,4 @@
-
-@model IEnumerable<Product>
+@model ProductListViewModel
 
 <div class="text-center">
     <div class="display-6">Products</div>
@@ -10,42 +9,104 @@
             Create
         </a>
     </div>
-    
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Image Url</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Operations</th>
-            </tr>
-        </thead>
-        @foreach(Product prd in Model)
-            {
-                <tr>
-                    <td>@prd.ProductId</td>
-                    <td>
-                        <img class="border border-light rounded" src="@prd?.ImageUrl" alt="@prd.ProductName" width="50">
-                    </td>
-                    <td>@prd.ProductName</td>
-                    <td>@prd.Price.ToString("c")</td>
-                    <td>
-                        <div class="btn-group">
-                            <a asp-action="Update" asp-route-id="@prd.ProductId" class="btn btn-warning">
-                                <i class="fa fa-edit"></i>
-                                Edit</a>
-                            <a asp-action="Delete" asp-route-id="@prd.ProductId" class="btn btn-danger">
-                                <i class="fa fa-trash"></i>
-                                Delete</a>
-                            <a asp-action="Update" target="_blank" asp-area="" asp-route-id="@prd.ProductId" class="btn btn-info">
-                                <i class="fa fa-search"></i>
-                                Web</a>
+
+    <div class="row">
+        <div class="col-md-3">
+
+            @await Component.InvokeAsync("CategoriesMenu")
+            <!--Component/CategoriesMenuViewComponent.cs üzerinden
+                  View/Shared/CategoriesMenu/default.cshtml dosyasını çeker-->
+            @await Component.InvokeAsync("ProductFilterMenu")
+            <!--Component/ProductFilterMenuViewComponent.cs üzerinden
+            View/Shared/ProductFilterMenu/default.cshtml dosyasını çeker-->
+        </div>
+        <div class="col-md-9">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Image Url</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Operations</th>
+                    </tr>
+                </thead>
+                @foreach (Product prd in Model.Products)
+                {
+                    <tr>
+                        <td>@prd.ProductId</td>
+                        <td>
+                            <img class="border border-light rounded" src="@prd?.ImageUrl" alt="@prd.ProductName" width="50">
+                        </td>
+                        <td>@prd.ProductName</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input type="checkbox"
+                                       class="form-check"
+                                       checked="@prd.ShowCase"
+                                       disabled />
+                            </div>
+                        </td>
+                        <td>@prd.Price.ToString("c")</td>
+                        <td>
+                            <div class="btn-group">
+                                @* tooltip example *@
+                                <a asp-action="Update" asp-route-id="@prd.ProductId"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Edit" class="btn btn-warning">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@prd.ProductId"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Delete" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                                <a asp-action="Update" target="_blank" asp-area=""
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Web"
+                                   asp-route-id="@prd.ProductId" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </a>
                                 @*admin paneldeyken areadan çıkıp web tarafındaki ürün ayrıntısını açar*@
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <div page-model="@Model?.Pagination" page-action="Index"
+                     page-classes-enabled="true"
+                     page-class="btn"
+                     page-class-normal="btn-outline-dark"
+                     page-class-selected="btn-primary"
+                     class="btn-group">
+                </div><!--koşula göre buradaki classlar aktif olur yada olmaz-->
+            </div>
+        </div>
+    </div>
+    
 </div>
+
+@* @section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(() => {
+            alert("hey")
+        })
+</script>
+}alert verme *@
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(() => {
+            $('data-toggle = "tooltip"]').tooltip()
+        })
+</script>
+}<!--butondan alert verme tooltip-->
+

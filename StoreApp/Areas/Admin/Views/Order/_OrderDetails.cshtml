@@ -41,7 +41,7 @@
             <div class="text-center mt-2 p-2">
                 <form asp-action="Complete" method="post">
                     <input type="hidden" name="id" value="@Model.OrderId" />
-                    <button type="submit" class="btn btn-primary" disable="@Model.Shipped">Complete</button>
+                    <button type="submit" class="btn btn-primary" disabled="@Model.Shipped">Complete</button>
 
                 </form>
             </div>

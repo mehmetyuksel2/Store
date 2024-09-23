@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace StoreApp.Areas.Admin.Controllers
-{   [Area("Admin")]
+{   
+    [Area("Admin")]
+    //[Authorize]//bu sayfayı görebilmek için login olmak yeterli
+    [Authorize(Roles = "Admin")]//hem login olup hemde bu admin ise bu sayfayı gör
     public class DashboardController : Controller
     {
                     //arealar asp.net core projesi içerisindeki bir alan
@@ -10,6 +14,7 @@ namespace StoreApp.Areas.Admin.Controllers
                     //yapıldı.
         public IActionResult Index()
         {
+            TempData["info"] = $"Welcome back{DateTime.Now.ToShortDateString()}";
             return View();
         }
     }
