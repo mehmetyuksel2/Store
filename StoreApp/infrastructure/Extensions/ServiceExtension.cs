@@ -6,6 +6,10 @@ using Services;
 using Entities.Models;
 using StoreApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using StoreApp.infrastructure.Mapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore.SqlServer;
 
 namespace StoreApp.infrastructure.Extensions
 {
@@ -16,13 +20,16 @@ namespace StoreApp.infrastructure.Extensions
         {// context bağlantısı
             services.AddDbContext<RepositoryContext>(options =>
             {
-                options.UseSqlite("Data Source = Products.db", b => b.MigrationsAssembly("StoreApp"));
+                options.UseSqlServer(configuration.GetConnectionString("mssqlconnection"),
+                b => b.MigrationsAssembly("StoreApp"));
                 //b.MigrationsAssembly("StoreApp") contex ve modeller repositories deyken storeapp de
                 // migration oluşturmak için 
                 // burada storeapp e yönlendirme yapıyoruz
                 options.EnableSensitiveDataLogging(true);//veri alış verişini görebilmek için true yapılır yayına alınca tersi yapılır
                 
             });
+
+            services.AddAutoMapper(typeof(MappingProfile)); // MappingProfile'ı ekleyin
         }
         public static void ConfigureIdentity(this IServiceCollection services)
         {
@@ -35,6 +42,8 @@ namespace StoreApp.infrastructure.Extensions
                 options.Password.RequireDigit = false;//rakam gereksinmi
                 options.Password.RequiredLength = 6;//password min 6 karakter olsun
             }).AddEntityFrameworkStores<RepositoryContext>();
+
+
         }
 
         public static void ConfigureSession(this IServiceCollection services)
@@ -60,11 +69,13 @@ namespace StoreApp.infrastructure.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IAuthService, AuthManager>();
         }
         public static void ConfigureServiceRegistration(this IServiceCollection services)
         {
 
             services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddScoped<IAuthService, AuthManager>();
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<ICategoryService, CategoryManager>();
             services.AddScoped<IOrderService, OrderManager>();
@@ -79,5 +90,15 @@ namespace StoreApp.infrastructure.Extensions
 
             });
         }
+        public static void ConfigureApplicationCookie(this IServiceCollection services)
+        {
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = new PathString("/Account/Login");
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                options.AccessDeniedPath = new PathString("/Account/AccessDenied");
+            });
+        }// bu kodun açıklamasına bak
     }
 }

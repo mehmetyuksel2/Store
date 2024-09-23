@@ -1,0 +1,18 @@
+﻿@if(TempData["info"] is not null)
+{
+    <div class="alert alert-info my-3" role="alert">
+        @TempData["info"] @* bir kere okunduktan sonra null değeri alır *@
+    </div>
+}
+@if (TempData["success"] is not null)
+{
+    <div class="alert alert-info my-3" role="alert">
+        @TempData["success"] @* bir kere okunduktan sonra null değeri alır *@
+    </div>
+}
+@if (TempData["danger"] is not null)
+{
+    <div class="alert alert-danger my-3" role="alert">
+        @TempData["danger"] @* bir kere okunduktan sonra null değeri alır *@
+    </div>
+}

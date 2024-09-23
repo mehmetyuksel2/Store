@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    <title>StoreApp - ViewData["Title"] </title><!--ViewData["Title"] controller a göder dinamik title verebiliriz-->
+    <link rel="stylesheet" asp-append-version="true" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" asp-append-version="true" href="~/css/site.css" />
+    <link rel="stylesheet" asp-append-version="true" href="~/lib/font-awesome/css/all.css" />
+    <!-- asp-append-version="true" dosyaları önbellekleme yapar performans arttırır-->
 </head>
 
 <body>
@@ -18,6 +19,9 @@
         <!-- headera eklenecek ekstra bir kod var ise ekler(zorunlu değil)-->
     </header>
     <div class="container">
+        <div>
+            <partial name="_Notification" /><!--tempdata aracılığı ile notifacation vereceğimiz bölüm-->
+        </div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

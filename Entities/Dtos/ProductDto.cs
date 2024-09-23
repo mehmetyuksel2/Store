@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Dtos
-{//Dto Data Transfer Object // ummutable olduğu için bir kez oluşturulurken değer atanır.
+{//Dto Data Transfer Object // ummutable olduğu için bir kez, oluşturulurken değer atanır.
  //Sonrasında değiştirilemezler
     public record ProductDto
     {
-        public int ProductId { get; init; }
+        public int ProductId { get; init; }// "init" başlangıçta değer alacağına işaret eder.
         [Required(ErrorMessage ="ProductName is required")]
         public String? ProductName { get; init; } = String.Empty;
         [Required(ErrorMessage ="Price is required")]

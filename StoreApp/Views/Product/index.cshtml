@@ -21,12 +21,15 @@
                 //shared dosyasının altından _ProductCard.cshtml kodlarını @prd parametresini vererek çeker
             }
         </div>
-        <div page-model="@Model?.Pagination" page-action="Index"
-             page-classes-enabled="true"
-             page-class="btn"
-             page-class-normal="btn-outline-dark"
-             page-class-selected="btn-primary"
-             class="btn-group"></div><!--koşula göre buradaki classlar aktif olur yada olmaz-->
+        <div class="text-center">
+            <div page-model="@Model?.Pagination" page-action="Index"
+                 page-classes-enabled="true"
+                 page-class="btn"
+                 page-class-normal="btn-outline-dark"
+                 page-class-selected="btn-primary"
+                 class="btn-group">
+             </div><!--koşula göre buradaki classlar aktif olur yada olmaz-->
+        </div>
     </div>
 </div>
 @section Footer {
